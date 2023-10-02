@@ -17,9 +17,20 @@ VALUES ('Highway to Hell', 208, NULL),
 	('Body and Soul', 284, 3),
 	('Superman', 350, 2),
 	('Say Goodbye Hollywood', 273, 2),
-	('In my time of dying', 192, 1)
-	('Lonely', 160, 4)
-	('Monday', 188, 4);
+	('In my time of dying', 192, 1),
+	('Lonely', 160, 4),
+	('Monday', 188, 4),
+	('myself', 110, NULL),
+	('by myself', 110, NULL),
+	('bemy self', 110, NULL),
+	('myself by', 110, NULL),
+	('by myself by', 110, NULL),
+	('beemy', 110, NULL),
+	('premyne', 110, NULL),
+	('my own', 110, NULL),
+	('own my', 110, NULL),
+	('oh my god', 110, NULL),
+	('my', 110, NULL);
 	
 INSERT INTO collections(collection_name, year_of_issue)
 VALUES	('collection_1', 2020),
@@ -30,14 +41,14 @@ INSERT INTO artist_genre
 VALUES (1, 1),
 	(2, 3),
 	(3, 2),
-	(4, 1)
-	(5, 1)
+	(4, 1),
+	(5, 1),
 	(5, 4);
 	
 INSERT INTO artist_album
 VALUES (2, 2),
 	(3, 3),
-	(4, 1)
+	(4, 1),
 	(5, 4);
 
 INSERT INTO collection_track

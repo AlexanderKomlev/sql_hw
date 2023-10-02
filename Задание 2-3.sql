@@ -22,7 +22,7 @@ WHERE artist_name NOT LIKE '% %';
 -- 5.
 
 SELECT track_name FROM tracks
-WHERE track_name LIKE '% my %';
+WHERE STRING_TO_ARRAY(LOWER(track_name), ' ') && ARRAY['my'];
 
 -- ЗАДАНИЕ 3
 -- 1.
@@ -46,9 +46,11 @@ GROUP BY album_name;
 -- 4.
 
 SELECT artist_name FROM artists AS a
-JOIN artist_album AS aa ON aa.artist_id = a.artist_id 
-JOIN albums AS a2 ON a2.album_id = aa.album_id 
-WHERE a2.year_of_issue != 2020;
+WHERE artist_name NOT IN 
+(SELECT artist_name FROM artists a2
+JOIN artist_album aa ON a2.artist_id = aa.artist_id
+JOIN albums a3 ON aa.album_id = a3.album_id
+WHERE a3.year_of_issue = 2020)
 
 -- 5.
 
@@ -63,13 +65,12 @@ WHERE a2.artist_name = 'Led Zeppelin';
 -- ЗАДАНИЕ 4
 -- 1.
 
-SELECT album_name FROM albums AS a 
-JOIN artist_album AS aa ON a.album_id = aa.album_id  
-JOIN artists AS a2 ON aa.artist_id = a2.artist_id 
-JOIN artist_genre AS ag ON a2.artist_id = ag.artist_id 
-JOIN genres AS g ON ag.genre_id = g.genre_id 
-GROUP BY album_name 
-HAVING COUNT(g.genre_id) > 1;
+SELECT DISTINCT album_name, ag.artist_id FROM albums AS a 
+JOIN artist_album AS aa ON a.album_id = aa.album_id
+JOIN artists AS a2 ON aa.artist_id = a2.artist_id
+JOIN artist_genre AS ag ON a2.artist_id = ag.artist_id
+GROUP BY album_name, ag.artist_id
+HAVING COUNT(ag.genre_id) > 1;
 
 -- 2.
 
@@ -84,6 +85,19 @@ JOIN artist_album AS aa ON a.artist_id = aa.artist_id
 JOIN albums AS a2 ON aa.album_id = a2.album_id 
 JOIN tracks AS t ON a2.album_id = t.album_id 
 WHERE t.duration = (SELECT MIN(duration) FROM tracks);
+
+-- 4.
+
+SELECT album_name FROM albums a 
+JOIN tracks t ON a.album_id = t.album_id 
+GROUP BY album_name
+HAVING COUNT(t.album_id) = (SELECT MIN(cnt)
+FROM (SELECT COUNT(t.album_id) cnt FROM tracks t
+JOIN albums a ON t.album_id = a.album_id
+GROUP BY t.album_id))
+
+
+
 
 
 
